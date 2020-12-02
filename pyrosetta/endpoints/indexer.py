@@ -9,4 +9,7 @@ def get_range_of_block_events():
 def search_for_transactions():
     """
     req: SearchTransactionsRequest
+    resp: SearchTransactionsResponse
+    ref: /search/transactions
     """
+    pass
