@@ -9,16 +9,20 @@ from .identifiers import (
                          TransactionIdentifierSchema
                          )
 
-from .objects import AmountSchema, BlockSchema, SigningPayloadSchema, TransactionSchema, OperationSchema
-
-from ._objects import (VersionSchema, 
-                       AllowSchema, 
-                       SyncStatusSchema, 
-                       PeerSchema,
-                       CoinSchema,
-                       BlockEventSchema,
-                       BlockTransactionSchema
-                       )
+from .objects import (
+                      AmountSchema,
+                      BlockSchema,
+                      SigningPayloadSchema,
+                      TransactionSchema,
+                      OperationSchema,                
+                      VersionSchema, 
+                      AllowSchema, 
+                      SyncStatusSchema, 
+                      PeerSchema,
+                      CoinSchema,
+                      BlockEventSchema,
+                      BlockTransactionSchema
+                     )
 
 class NetworkListResponseSchema(Schema):
     """

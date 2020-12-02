@@ -51,3 +51,16 @@ class AccountIdentifierSchema(Schema):
     address = fields.Str(required=True)
     sub_account = fields.Nested(SubAccountIdentfierSchema)
     metadata = fields.Dict()
+
+class CoinIdentifierSchema(Schema):
+    """
+    ref: models/CoinIdentifier.yaml
+    """
+    identifier = fields.Str(required=True)
+    
+class PartialBlockIdentifierSchema(Schema):
+    """
+    ref: models/PartialBlockIdentifier.yaml
+    """
+    index = fields.Integer(validate=geq_zero)
+    hash = fields.Str()

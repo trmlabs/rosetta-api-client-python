@@ -1,12 +1,12 @@
 from marshmallow import Schema, fields
 
-from .identifiers import (AccountIdentifierSchema, 
+from .identifiers import (AccountIdentifierSchema,
                           BlockIdentifierSchema,
-                          NetworkIdentifierSchema, 
+                          CoinIdentifierSchema,
+                          NetworkIdentifierSchema,
+                          PartialBlockIdentifierSchema, 
                           TransactionIdentifierSchema
                           )
-
-from ._identifiers import CoinIdentifierSchema, PartialBlockIdentifierSchema
 
 from .objects import AmountSchema, CurrencySchema, OperationSchema, PublicKeySchema, SignatureSchema
 
