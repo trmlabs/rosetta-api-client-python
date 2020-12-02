@@ -1,12 +1,12 @@
 from marshmallow import Schema, fields
 
-from .validators import geq_zero
+from .validators import NonNegative
 
 class BlockIdentifierSchema(Schema):
     """
     ref: models/BlockIdentifier.yaml
     """
-    index = fields.Integer(required=True, validate=geq_zero)
+    index = fields.Integer(required=True, validate=NonNegative)
     hash = fields.Str(required=True)
 
 class SubNetworkIdentifierSchema(Schema):
@@ -34,8 +34,8 @@ class OperationIdentifierSchema(Schema):
     """
     ref: models/OperationIdentifier.yaml
     """
-    index = fields.Integer(required=True, validate=geq_zero)
-    network_index = fields.Integer(validate=geq_zero)
+    index = fields.Integer(required=True, validate=NonNegative)
+    network_index = fields.Integer(validate=NonNegative)
     
 class SubAccountIdentfierSchema(Schema):
     """
@@ -62,5 +62,5 @@ class PartialBlockIdentifierSchema(Schema):
     """
     ref: models/PartialBlockIdentifier.yaml
     """
-    index = fields.Integer(validate=geq_zero)
+    index = fields.Integer(validate=NonNegative)
     hash = fields.Str()

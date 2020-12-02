@@ -1,7 +1,9 @@
 from marshmallow import ValidationError
 
-def geq_zero(n):
-    return n >= 0
+def NonNegative(n):
+    if n < 0:
+        raise ValidationError('{} must be greater than or equal to zero.')
+    return True
 
 def CoinAction(s):
     """

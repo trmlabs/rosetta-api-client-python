@@ -1,6 +1,7 @@
 from marshmallow import Schema, fields
 
-from .identifiers import (AccountIdentifierSchema,
+from .identifiers import (
+                          AccountIdentifierSchema,
                           BlockIdentifierSchema,
                           CoinIdentifierSchema,
                           NetworkIdentifierSchema,
@@ -8,9 +9,15 @@ from .identifiers import (AccountIdentifierSchema,
                           TransactionIdentifierSchema
                           )
 
-from .objects import AmountSchema, CurrencySchema, OperationSchema, PublicKeySchema, SignatureSchema
+from .objects import (
+                      AmountSchema, 
+                      CurrencySchema, 
+                      OperationSchema, 
+                      PublicKeySchema, 
+                      SignatureSchema
+                     )
 
-from .validators import geq_zero, Operator
+from .validators import Operator, NonNegative
 
 class MetadataRequestSchema(Schema):
     """
@@ -135,8 +142,8 @@ class EventsBlocksRequestSchema(Schema):
     ref: models/EventsBlocksRequest.yaml
     """
     network_identifier = fields.Nested(NetworkIdentifierSchema, required=True)
-    offset = fields.Integer(validate=geq_zero)
-    limit = fields.Integer(validate=geq_zero)
+    offset = fields.Integer(validate=NonNegative)
+    limit = fields.Integer(validate=NonNegative)
 
 class SearchTransactionsRequestSchema(Schema):
     """
@@ -144,9 +151,9 @@ class SearchTransactionsRequestSchema(Schema):
     """
     network_identifier = fields.Nested(NetworkIdentifierSchema, required=True)
     operator = fields.Str(validate=Operator)
-    max_block = fields.Integer(validate=geq_zero)
-    offset = fields.Integer(validate=geq_zero)
-    limit = fields.Integer(validate=geq_zero)
+    max_block = fields.Integer(validate=NonNegative)
+    offset = fields.Integer(validate=NonNegative)
+    limit = fields.Integer(validate=NonNegative)
     transaction_identifier = fields.Nested(TransactionIdentifierSchema)
     account_identifier = fields.Nested(AccountIdentifierSchema)
     coin_identifier = fields.Nested(CoinIdentifierSchema)

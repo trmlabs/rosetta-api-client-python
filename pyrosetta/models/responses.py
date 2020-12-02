@@ -1,27 +1,27 @@
 from marshmallow import Schema, fields
 
-from .validators import geq_zero
+from .validators import NonNegative
 
 from .identifiers import (
-                         AccountIdentifierSchema,
-                         BlockIdentifierSchema,
-                         NetworkIdentifierSchema,
-                         TransactionIdentifierSchema
+                          AccountIdentifierSchema,
+                          BlockIdentifierSchema,
+                          NetworkIdentifierSchema,
+                          TransactionIdentifierSchema
                          )
 
 from .objects import (
+                      AllowSchema,
                       AmountSchema,
                       BlockSchema,
-                      SigningPayloadSchema,
-                      TransactionSchema,
-                      OperationSchema,                
-                      VersionSchema, 
-                      AllowSchema, 
-                      SyncStatusSchema, 
-                      PeerSchema,
-                      CoinSchema,
                       BlockEventSchema,
-                      BlockTransactionSchema
+                      BlockTransactionSchema,
+                      CoinSchema,
+                      OperationSchema,
+                      PeerSchema,
+                      SigningPayloadSchema,
+                      SyncStatusSchema
+                      TransactionSchema,
+                      VersionSchema
                      )
 
 class NetworkListResponseSchema(Schema):
@@ -42,7 +42,7 @@ class NetworkStatusResponseSchema(Schema):
     ref: models/NetworkStatusResponse.yaml
     """
     current_block_identifier = fields.Nested(BlockIdentifierSchema, required=True)
-    current_block_timestamp = fields.Integer(required=True, validate=geq_zero)
+    current_block_timestamp = fields.Integer(required=True, validate=NonNegative)
     genesis_block_identifier = fields.Nested(BlockIdentifierSchema, required=True)
     oldest_block_identifier = fields.Nested(BlockIdentifierSchema)
     sync_status = fields.Nested(SyncStatusSchema)
@@ -147,12 +147,12 @@ class EventsBlocksResponseSchema(Schema):
     """
     ref: models/EventsBlocksResponse.yaml
     """
-    max_sequence = fields.Integer(required=True, validate=geq_zero)
+    max_sequence = fields.Integer(required=True, validate=NonNegative)
     events = fields.List(fields.Nested(BlockEventSchema))
 
 class SearchTransactionsResponseScehma(Schema):
     """
     ref: models/SearchTransactionsResponse.yaml
     """
-    next_offset = fields.Integer(validate=geq_zero)
+    next_offset = fields.Integer(validate=NonNegative)
     transactions = fields.List(fields.Nested(BlockTransactionSchema))

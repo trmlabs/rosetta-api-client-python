@@ -1,13 +1,21 @@
 from marshmallow import Schema, fields
 
-from .validators import geq_zero, SignatureType, CurveType, CoinAction, BlockEventType, ExemptionType
-
-from .identifiers import (BlockIdentifierSchema, 
-                          TransactionIdentifierSchema,
-                          OperationIdentifierSchema,
+from .identifiers import (
                           AccountIdentifierSchema,
-                          CoinIdentifierSchema
-                          )
+                          BlockIdentifierSchema,
+                          CoinIdentifierSchema,
+                          OperationIdentifierSchema, 
+                          TransactionIdentifierSchema
+                         )
+
+from .validators import (
+                         BlockEventType,
+                         CoinAction,
+                         CurveType,
+                         ExemptionType,
+                         NonNegative, 
+                         SignatureType
+                        )
 
 class OperationSchema(Schema):
     """
@@ -35,7 +43,7 @@ class BlockSchema(Schema):
     """
     block_identifier = fields.Nested(BlockIdentifierSchema, required=True)
     parent_block_identifier = fields.Nested(BlockIdentifierSchema, required=True)
-    timestamp = fields.Integer(required=True, validate=geq_zero)
+    timestamp = fields.Integer(required=True, validate=NonNegative)
     transactions = fields.List(fields.Nested(TransactionSchema))
     metadata = fields.Dict()
     
@@ -44,7 +52,7 @@ class CurrencySchema(Schema):
     ref: models/Currency.yaml
     """
     symbol = fields.Str(required=True)
-    decimals = fields.Integer(required=True, validate=geq_zero)
+    decimals = fields.Integer(required=True, validate=NonNegative)
     metadata = fields.Dict()
 
 class AmountSchema(Schema):
@@ -60,7 +68,7 @@ class ErrorSchema(Schema):
     """
     ref: models/Error.yaml
     """
-    code = fields.Integer(required=True, validate=geq_zero)
+    code = fields.Integer(required=True, validate=NonNegative)
     message = fields.Str(required=True)
     description = fields.Str()
     retriable = fields.Boolean(required=True)
@@ -137,7 +145,7 @@ class AllowSchema(Schema):
     opertaion_types = fields.List(fields.Str())
     errors = fields.List(fields.Nested(ErrorSchema))
     historical_balance_lookup = fields.Boolean(required=True)
-    timestamp_start_index = fields.Integer(validate=geq_zero)
+    timestamp_start_index = fields.Integer(validate=NonNegative)
     call_methods = fields.List(fields.Str())
     balance_exemptions = fields.List(fields.Nested(BalanceExemptionSchema))
     mempool_coins = fields.Boolean(required=True)
@@ -146,8 +154,8 @@ class SyncStatusSchema(Schema):
     """
     ref: models/SyncStatus.yaml
     """
-    current_index = fields.Integer(required=True, validate=geq_zero)
-    target_index = fields.Integer(validate=geq_zero)
+    current_index = fields.Integer(required=True, validate=NonNegative)
+    target_index = fields.Integer(validate=NonNegative)
     stage = fields.Str()
     
 class PeerSchema(Schema):
@@ -161,7 +169,7 @@ class BlockEventSchema(Schema):
     """
     ref: models/BlockEvent.yaml
     """
-    sequence = fields.Integer(required=True, validate=geq_zero)
+    sequence = fields.Integer(required=True, validate=NonNegative)
     block_identifier = fields.Nested(BlockIdentifierSchema, required=True)
     type = fields.Str(required=True, validate=BlockEventType)
 
