@@ -2,9 +2,14 @@ from marshmallow import Schema, fields
 
 from .validators import geq_zero
 
-from .identifiers import NetworkIdentifierSchema, BlockIdentifierSchema, TransactionIdentifierSchema
+from .identifiers import (
+                         AccountIdentifierSchema,
+                         BlockIdentifierSchema,
+                         NetworkIdentifierSchema,
+                         TransactionIdentifierSchema
+                         )
 
-from .objects import AmountSchema, BlockSchema, TransactionSchema
+from .objects import AmountSchema, BlockSchema, SigningPayloadSchema, TransactionSchema, OperationSchema
 
 from ._objects import (VersionSchema, 
                        AllowSchema, 
@@ -79,4 +84,55 @@ class MempoolTransactionResponseSchema(Schema):
     """
     transaction = fields.Nested(TransactionSchema, required=True)
     metadata = fields.Dict()
-    
+
+class ConstructionCombineResponseSchema(Schema):
+    """
+    ref: models/ConstructionCombineResponse.yaml
+    """
+    signed_transaction = fields.Str(required=True)
+
+class ConstructionDeriveResponseSchema(Schema):
+    """
+    ref: models/ConstructionDeriveResponse.yaml
+    """
+    address = fields.Str()
+    account_identifier = fields.Nested(AccountIdentifierSchema)
+    metadata = fields.Dict()
+
+class TransactionIdentifierResponseSchema(Schema):
+    """
+    ref: models/TransactionIdentifierResponse.yaml
+    """
+    transaction_identifier = fields.Nested(TransactionIdentifierSchema)
+    metadata = fields.Dict()
+
+class ConstructionMetadataResponseSchema(Schema):
+    """
+    ref: models/ConstructionMetadataResponse.yaml
+    """
+    metadata = fields.Dict(required=True)
+    suggested_fee = fields.List(fields.Nested(AmountSchema))
+
+
+class ConstructionParseResponseSchema(Schema):
+    """
+    ref: models/ConstructionParseResponse.yaml
+    """
+    operations = fields.List(fields.Nested(OperationSchema))
+    signers = fields.List(fields.Str())
+    account_identifier_signers = fields.List(fields.Nested(AccountIdentifierSchema))
+    metadata = fields.Dict()
+
+class ConstructionPayloadsResponseSchema(Schema):
+    """
+    ref: models/ConstructionPayloadsResponse.yaml
+    """
+    unsigned_transaction = fields.Str(required=True)
+    payloads = fields.List(fields.Nested(SigningPayloadSchema))
+
+class ConstructionPreprocessResponseSchema(Schema):
+    """
+    ref: models/ConstructionPreprocessResponse.yaml
+    """
+    options = fields.Dict()
+    required_public_keys = fields.List(fields.Nested(AccountIdentifierSchema))
