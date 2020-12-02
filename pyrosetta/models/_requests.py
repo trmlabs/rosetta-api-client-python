@@ -6,9 +6,11 @@ from .identifiers import (AccountIdentifierSchema,
                           TransactionIdentifierSchema
                           )
 
-from ._identifiers import PartialBlockIdentifierSchema
+from ._identifiers import CoinIdentifierSchema, PartialBlockIdentifierSchema
 
 from .objects import AmountSchema, CurrencySchema, OperationSchema, PublicKeySchema, SignatureSchema
+
+from .validators import geq_zero, Operator
 
 class MetadataRequestSchema(Schema):
     """
@@ -127,3 +129,29 @@ class ConstructionSubmitRequestSchema(Schema):
     """
     network_identifier = fields.Nested(NetworkIdentifierSchema, required=True)
     signed_transaction = fields.Str(required=True)
+
+class EventsBlocksRequestSchema(Schema):
+    """
+    ref: models/EventsBlocksRequest.yaml
+    """
+    network_identifier = fields.Nested(NetworkIdentifierSchema, required=True)
+    offset = fields.Integer(validate=geq_zero)
+    limit = fields.Integer(validate=geq_zero)
+
+class SearchTransactionsRequestSchema(Schema):
+    """
+    ref: models/SearchTransactionsRequest.yaml
+    """
+    network_identifier = fields.Nested(NetworkIdentifierSchema, required=True)
+    operator = fields.Str(validate=Operator)
+    max_block = fields.Integer(validate=geq_zero)
+    offset = fields.Integer(validate=geq_zero)
+    limit = fields.Integer(validate=geq_zero)
+    transaction_identifier = fields.Nested(TransactionIdentifierSchema)
+    account_identifier = fields.Nested(AccountIdentifierSchema)
+    coin_identifier = fields.Nested(CoinIdentifierSchema)
+    currency = fields.Nested(CurrencySchema)
+    status = fields.Str()
+    type = fields.Str()
+    address = fields.Str()
+    success = fields.Boolean()

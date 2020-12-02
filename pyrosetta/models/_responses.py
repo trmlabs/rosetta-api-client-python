@@ -15,7 +15,9 @@ from ._objects import (VersionSchema,
                        AllowSchema, 
                        SyncStatusSchema, 
                        PeerSchema,
-                       CoinSchema
+                       CoinSchema,
+                       BlockEventSchema,
+                       BlockTransactionSchema
                        )
 
 class NetworkListResponseSchema(Schema):
@@ -136,3 +138,17 @@ class ConstructionPreprocessResponseSchema(Schema):
     """
     options = fields.Dict()
     required_public_keys = fields.List(fields.Nested(AccountIdentifierSchema))
+
+class EventsBlocksResponseSchema(Schema):
+    """
+    ref: models/EventsBlocksResponse.yaml
+    """
+    max_sequence = fields.Integer(required=True, validate=geq_zero)
+    events = fields.List(fields.Nested(BlockEventSchema))
+
+class SearchTransactionsResponseScehma(Schema):
+    """
+    ref: models/SearchTransactionsResponse.yaml
+    """
+    next_offset = fields.Integer(validate=geq_zero)
+    transactions = fields.List(fields.Nested(BlockTransactionSchema))

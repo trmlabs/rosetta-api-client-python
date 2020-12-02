@@ -1,8 +1,9 @@
 from marshmallow import Schema, fields
 
-from .objects import CurrencySchema, ErrorSchema, AmountSchema
+from .objects import CurrencySchema, ErrorSchema, AmountSchema, TransactionSchema
 
-from .validators import CoinAction, ExemptionType, geq_zero
+from .validators import CoinAction, BlockEventType, ExemptionType, geq_zero
+from .identifiers import BlockIdentifierSchema
 from ._identifiers import CoinIdentifierSchema
 
 class CoinChangeSchema(Schema):
@@ -70,3 +71,18 @@ class PeerSchema(Schema):
     """
     peer_id = fields.Str(required=True)
     metadata = fields.Dict()
+
+class BlockEventSchema(Schema):
+    """
+    ref: models/BlockEvent.yaml
+    """
+    sequence = fields.Integer(required=True, validate=geq_zero)
+    block_identifier = fields.Nested(BlockIdentifierSchema, required=True)
+    type = fields.Str(required=True, validate=BlockEventType)
+
+class BlockTransactionSchema(Schema):
+    """
+    ref: models/BlockTransaction.yaml
+    """
+    block_identifier = fields.Nested(BlockIdentifierSchema, required=True)
+    transaction = fields.Nested(TransactionSchema, required=True)

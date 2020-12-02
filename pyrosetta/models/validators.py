@@ -34,3 +34,19 @@ def ExemptionType(s):
     if s not in ('greater_or_equal', 'less_or_equal', 'dynamic'):
         raise ValidationError('{} is not a valid ExemptionType'.format(s))
     return True
+
+def BlockEventType(s):
+    """
+    ref: models/BlockEventType.yaml
+    """
+    if s not in ('block_added', 'block_removed'):
+        raise ValidationError('{} is not a valid BlockEventType'.format(s))
+    return True
+
+def Operator(s):
+    """
+    ref: models/Operator.yaml
+    """
+    if s not in ('or', 'and'):
+        raise ValidationError('{} is not a valid Operator.')
+    return True
