@@ -13,7 +13,7 @@ from ..models import (
 
 from ..utils.communication import post_request
 
-def get_available_networks(req):
+def get_available_networks(req : MetadataRequest):
     """
     req: MetadataRequest
     resp: NetworkListResponse
@@ -21,7 +21,7 @@ def get_available_networks(req):
     """
     url = '{}/network/list'.format(API_URL)
     resp = post_request(url, req.json())
-    return resp.json()
+    return NetworkListResponse(**resp.json())
 
 def get_network_options():
     """

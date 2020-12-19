@@ -130,3 +130,7 @@ dmypy.json
 
 # VSCodium
 .vscode/
+
+# Harmony Node
+
+data
