@@ -1,10 +1,24 @@
-def get_available_networks():
+from ..models import (
+                      AccountBalanceRequest,
+                      AccountCoinsRequest,
+                      BlockRequest,
+                      BlockTransacitonRequest,
+                      MempoolTransactionRequest,
+                      MetadataRequest,
+                      NetworkRequest,
+                      NetworkListResponse
+                     )
+
+from ..utils.communication import post_request
+
+def get_available_networks(session, MetadataRequest):
     """
     req: MetadataRequest
     resp: NetworkListResponse
     ref: /network/list
     """
-    pass
+    resp = post_request('/network/list', MetadataRequest.json())
+    return 
 
 def get_network_options():
     """

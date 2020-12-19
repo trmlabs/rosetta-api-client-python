@@ -17,6 +17,6 @@ setuptools.setup(
     install_requires=[
         'Typer',
         'pydantic',
-        'aiohttp[speedups]'
+        'requests'
     ]
 )
