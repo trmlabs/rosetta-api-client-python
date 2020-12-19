@@ -8,7 +8,9 @@ from ..models import (
                       MempoolTransactionRequest,
                       MetadataRequest,
                       NetworkRequest,
-                      NetworkListResponse
+                      NetworkListResponse,
+                      NetworkOptionsResponse,
+                      NetworkStatusResponse
                      )
 
 from ..utils.communication import post_request
@@ -23,29 +25,35 @@ def get_available_networks(req : MetadataRequest):
     resp = post_request(url, req.json())
     return NetworkListResponse(**resp.json())
 
-def get_network_options():
+def get_network_options(req: NetworkRequest):
     """
     req: NetworkRequest
     resp: NetworkOptionsResponse
     ref: /network/options
     """
-    pass
+    url = '{}/network/options'.format(API_URL)
+    resp = post_request(url, req.json())
+    return NetworkOptionsResponse(**resp.json())
 
-def get_network_status():
+def get_network_status(req: NetworkRequest):
     """
     req: NetworkRequest
     resp: NetworkStatusResponse
     ref: /network/status
     """
-    pass
+    url = '{}/network/status'.format(API_URL)
+    resp = post_request(url, req.json())
+    return NetworkStatusResponse(**resp.json())
 
-def get_account_balance():
+def get_account_balance(req : AccountBalanceRequest):
     """
     req: AccountBalanceRequest
     resp: AccountBalanceResponse
     ref: /account/balance
     """
-    pass
+    url = '{}/account/balance'.format(API_URL)
+    resp = post_request(url, req.json())
+    return AccountBalanceResponse(**resp.json())
 
 def get_account_unspent_coins():
     """
@@ -53,7 +61,8 @@ def get_account_unspent_coins():
     resp: AccountCoinsResponse
     ref: /account/coins
     """
-    pass
+   pass
+
 
 def get_block():
     """

@@ -134,3 +134,6 @@ dmypy.json
 # Harmony Node
 
 data
+
+
+*.DS_Store
