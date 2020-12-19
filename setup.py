@@ -15,8 +15,8 @@ setuptools.setup(
     license='Apache License 2.0',
     python_requires='>=3.7',
     install_requires=[
-        'click',
-        'marshmallow',
+        'Typer',
+        'pydantic',
         'aiohttp[speedups]'
     ]
 )
