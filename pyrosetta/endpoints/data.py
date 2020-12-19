@@ -1,8 +1,10 @@
+from .. import API_URL
+
 from ..models import (
                       AccountBalanceRequest,
                       AccountCoinsRequest,
                       BlockRequest,
-                      BlockTransacitonRequest,
+                      BlockTransactionRequest,
                       MempoolTransactionRequest,
                       MetadataRequest,
                       NetworkRequest,
@@ -11,14 +13,15 @@ from ..models import (
 
 from ..utils.communication import post_request
 
-def get_available_networks(session, MetadataRequest):
+def get_available_networks(req):
     """
     req: MetadataRequest
     resp: NetworkListResponse
     ref: /network/list
     """
-    resp = post_request('/network/list', MetadataRequest.json())
-    return 
+    url = '{}/network/list'.format(API_URL)
+    resp = post_request(url, req.json())
+    return resp.json()
 
 def get_network_options():
     """
