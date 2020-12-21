@@ -55,44 +55,57 @@ def get_account_balance(req : AccountBalanceRequest):
     resp = post_request(url, req.json())
     return AccountBalanceResponse(**resp.json())
 
-def get_account_unspent_coins():
+def get_account_unspent_coins(req : AccountCoinsRequest):
     """
     req: AccountCoinsRequest
     resp: AccountCoinsResponse
     ref: /account/coins
     """
-   pass
+    url = '{}/account/coins'.format(API_URL)
+    resp = post_request(url, req.json())
+    return AccountCoinsResponse(**resp.json())
 
 
-def get_block():
+def get_block(req : BlockRequest):
     """
     req: BlockRequest
     resp: BlockResponse
     ref: /block
     """
-    pass
+    url = '{}/block'.format(API_URL)
+    resp = post_request(url, req.json())
+    return BlockResponse(**resp.json())
+
     
-def get_block_transaction():
+def get_block_transaction(req : BlockTransactionRequest):
     """
-    req: BlockTransacitonRequest
+    req: BlockTransactionRequest
     resp: BlockTransactionResponse
     ref: /block/transaction
     """
-    pass
+    url = '{}/block/transaction'.format(API_URL)
+    resp = post_request(url, req.json())
+    return BlockTransactionResponse(**resp.json())
 
 
-def get_mempool_transaction_ids():
+
+def get_mempool_transaction_ids(req : NetworkRequest):
     """
     req: NetworkRequest
     resp: MempoolResponse
     ref: /mempool
     """
-    pass
+    url = '{}/mempool'.format(API_URL)
+    resp = post_request(url, req.json())
+    return MempoolResponse(**resp.json())
 
-def get_mempool_transaction():
+
+def get_mempool_transaction(req : MempoolTransactionRequest):
     """
     req: MempoolTransactionRequest
     resp: MempoolTransactionResponse
     ref: /mempool/transaction
     """
-    pass
+    url = '{}/mempool/transaction'.format(API_URL)
+    resp = post_request(url, req.json())
+    return MempoolTransactionResponse(**resp.json())
