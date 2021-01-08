@@ -1,21 +1,21 @@
 from .. import API_URL
 
 from ..models import (
-                      AccountBalanceRequest,
-                      AccountCoinsRequest,
-                      BlockRequest,
-                      BlockTransactionRequest,
-                      MempoolTransactionRequest,
-                      MetadataRequest,
-                      NetworkRequest,
-                      NetworkListResponse,
-                      NetworkOptionsResponse,
-                      NetworkStatusResponse
-                     )
+    AccountBalanceRequest,
+    AccountCoinsRequest,
+    BlockRequest,
+    BlockTransactionRequest,
+    MempoolTransactionRequest,
+    MetadataRequest,
+    NetworkRequest,
+    NetworkListResponse,
+    NetworkOptionsResponse,
+    NetworkStatusResponse
+)
 
 from ..utils.communication import post_request
 
-def get_available_networks(req : MetadataRequest):
+def get_available_networks(req : MetadataRequest) -> NetworkListResponse:
     """
     req: MetadataRequest
     resp: NetworkListResponse
@@ -25,7 +25,7 @@ def get_available_networks(req : MetadataRequest):
     resp = post_request(url, req.json())
     return NetworkListResponse(**resp.json())
 
-def get_network_options(req: NetworkRequest):
+def get_network_options(req: NetworkRequest) -> NetworkOptionsResponse:
     """
     req: NetworkRequest
     resp: NetworkOptionsResponse
@@ -35,7 +35,7 @@ def get_network_options(req: NetworkRequest):
     resp = post_request(url, req.json())
     return NetworkOptionsResponse(**resp.json())
 
-def get_network_status(req: NetworkRequest):
+def get_network_status(req: NetworkRequest) -> NetworkStatusResponse:
     """
     req: NetworkRequest
     resp: NetworkStatusResponse
@@ -45,7 +45,7 @@ def get_network_status(req: NetworkRequest):
     resp = post_request(url, req.json())
     return NetworkStatusResponse(**resp.json())
 
-def get_account_balance(req : AccountBalanceRequest):
+def get_account_balance(req : AccountBalanceRequest) -> AccountBalanceResponse:
     """
     req: AccountBalanceRequest
     resp: AccountBalanceResponse
@@ -55,7 +55,7 @@ def get_account_balance(req : AccountBalanceRequest):
     resp = post_request(url, req.json())
     return AccountBalanceResponse(**resp.json())
 
-def get_account_unspent_coins(req : AccountCoinsRequest):
+def get_account_unspent_coins(req : AccountCoinsRequest) -> AccountCoinsResponse:
     """
     req: AccountCoinsRequest
     resp: AccountCoinsResponse
@@ -66,7 +66,7 @@ def get_account_unspent_coins(req : AccountCoinsRequest):
     return AccountCoinsResponse(**resp.json())
 
 
-def get_block(req : BlockRequest):
+def get_block(req : BlockRequest) -> BlockResponse:
     """
     req: BlockRequest
     resp: BlockResponse
@@ -77,7 +77,7 @@ def get_block(req : BlockRequest):
     return BlockResponse(**resp.json())
 
     
-def get_block_transaction(req : BlockTransactionRequest):
+def get_block_transaction(req : BlockTransactionRequest) -> BlockTransactionResponse:
     """
     req: BlockTransactionRequest
     resp: BlockTransactionResponse
@@ -89,7 +89,7 @@ def get_block_transaction(req : BlockTransactionRequest):
 
 
 
-def get_mempool_transaction_ids(req : NetworkRequest):
+def get_mempool_transaction_ids(req : NetworkRequest) -> MempoolResponse:
     """
     req: NetworkRequest
     resp: MempoolResponse
@@ -100,7 +100,7 @@ def get_mempool_transaction_ids(req : NetworkRequest):
     return MempoolResponse(**resp.json())
 
 
-def get_mempool_transaction(req : MempoolTransactionRequest):
+def get_mempool_transaction(req : MempoolTransactionRequest) -> MempoolTransactionResponse:
     """
     req: MempoolTransactionRequest
     resp: MempoolTransactionResponse
