@@ -4,6 +4,8 @@ State of accounts.
 
 from typing import List, Optional
 
+import requests
+
 from .models import (
     AccountBalanceRequest,
     AccountBalanceResponse,
@@ -20,10 +22,12 @@ from .endpoints.data import (
     get_account_unspent_coins
 )
 
-def _balance_of_account_at_block(network_id: NetworkIdentifier, account_id : AccountIdentifier, block_id : Optional[PartialBlockIdentifier] = None, currencies : Optional[List[Currency]] = None) -> AccountBalanceResponse:
+def balance(api_url : str, network_id: NetworkIdentifier, account_id : AccountIdentifier, block_id : Optional[PartialBlockIdentifier] = None, currencies : Optional[List[Currency]] = None, session : Optional[requests.Session] = None) -> AccountBalanceResponse:
     """
     Parameters
     -----------
+    api_url : str
+        The url to the node's api.
     network_id : NetworkIdentifier
     account_id: AccountIdentifier
         Any included metadata is also included in being checked for uniqueness.
@@ -33,6 +37,10 @@ def _balance_of_account_at_block(network_id: NetworkIdentifier, account_id : Acc
     currencies, optional:
         Only balance of type Currency is returned. If none are specified, all 
         available currencies will be returned. 
+    session : requests.Session, optional
+        The persistent requests session to use. If none is
+        provided, a new session will be created for the single
+        request.
 
 
     Returns
@@ -40,12 +48,14 @@ def _balance_of_account_at_block(network_id: NetworkIdentifier, account_id : Acc
     AccountBalanceResponse
     """
     req = AccountBalanceRequest(network_id, account_id, block_id, currencies)
-    return get_account_balance(req)
+    return get_account_balance(api_url, req, session)
 
-def _unspent_coins_of_account(network_id : NetworkIdentifier, account_id : AccountIdentifier, include_mempool : bool, currencies : Optional[List[Currency]] = None) -> AccountCoinsResponse:
+def unspent_coins(api_url : str, network_id : NetworkIdentifier, account_id : AccountIdentifier, include_mempool : bool, currencies : Optional[List[Currency]] = None, session : Optional[requests.Session] = None) -> AccountCoinsResponse:
     """
     Parameters
     ----------
+    api_url : str
+        The url to the node's api.
     network_id : NetworkIdentifier
     account_id : AccountIdentifier
         Any included metadata is also included in being checked for uniqueness.
@@ -55,10 +65,14 @@ def _unspent_coins_of_account(network_id : NetworkIdentifier, account_id : Accou
     currencies: list[Currency], optional
         Only balance of type Currency is returned. If none are specified, all 
         available currencies will be returned.
+    session : requests.Session, optional
+        The persistent requests session to use. If none is
+        provided, a new session will be created for the single
+        request.
 
     Returns 
     --------
     AccountCoinsResponse
     """
     req = AccountBalanceRequest(network_id, account_id, include_mempool, currencies)
-    return get_account_unspent_coins(req)
+    return get_account_unspent_coins(api_url, req, session)

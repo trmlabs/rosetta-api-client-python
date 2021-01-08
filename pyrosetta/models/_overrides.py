@@ -172,7 +172,7 @@ def str_AccountBalanceResponse(self : AccountBalanceResponse) -> str:
     out.append(ident(str(self.block_identifier), 2))
     out.append("Balances:")
     for balance in self.balances:
-        out.append(indent("- {}".format(str(balance), 1))
+        out.append(indent("- {}".format(str(balance), 2))
     if self.metadata:
         out.append("Additional Metadata:")
         md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
@@ -185,3 +185,18 @@ def str_Coin(self : Coin) -> str:
     return "Balance of {} on coin_id: {}".format(self.amount, self.coin_identifier.identifier)
 
 Coin.__str__ = str_Coin
+
+def str_AccountCoinsResponse(self : AccountCoinsResponse) -> str:
+    out = ["Block:"]
+    out.append(ident(str(self.block_identifier), 2))
+    out.append("Coins:")
+    for coin in self.coins:
+        out.append(indent("- {}".format(str(coin), 2))
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+AccountCoinsResponse.__str__ = str_AccountCoinsResponse
+    

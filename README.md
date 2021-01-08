@@ -10,6 +10,15 @@ $ cd rosetta-api-client-python
 $ pip install -e .
 ```
 
+## TODO: 
+
+account.py (2 (Only "CLI friendly" methods)) 
+block.py (2)
+mempool.py (2)
+construction.py (8)
+events.py (1)
+search.py (1)
+
 ## Resources
 
 * [Rosetta API Documentation](https://www.rosetta-api.org/docs/welcome.html): the documentation for the Rosetta API spec
