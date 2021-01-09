@@ -199,4 +199,109 @@ def str_AccountCoinsResponse(self : AccountCoinsResponse) -> str:
     return "\n".join(*out)
 
 AccountCoinsResponse.__str__ = str_AccountCoinsResponse
+
+def str_OperationIdentifier(self : OperationIdentifier) -> str:
+    idx = "Index: {}".format(self.index)
+    if self.network_index is not None:
+        net_idx = "Network Index: {}".format(self.network_index)
+        return "\n".join(idx, net_idx)
+    return idx
+
+OperationIdentifier.__str__ = str_OperationIdentifier
+
+def str_CoinChange(self : CoinChange) -> str:
+    return "{} with coin id: {}".format(self.coin_action, self.coin_identifier.identifier)
+
+CoinChange.__str__ = str_CoinChange
+
+def str_Operation(self : Operation) -> str:
+    out = ["Operation:"]
+    out.append(indent(str(self.operation_identifier), 2))
+    if related_operations is not None:
+        out.append("Related Operations:")
+        for related in self.related_operations:
+            out.append(indent(str(related), 2))
+    
+    out.append("type: {}".format(self.type)) 
+    if self.status is not None:
+        out.append("Status: {}".format(self.status))
+    if self.account is not None:
+        out.append("Account:")
+        out.append(indent(str(self.account), 2))
+    if self.amount is not None:
+        out.append("Amount:")
+        out.append(indent(str(self.amount), 2))
+    if self.coin_change is not None:
+        out.append("Coin Change: {}".format(self.coin_change))
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+Operation.__str__ = str_Operation
+
+def str_RelatedTransaction(self : RelatedTransaction) -> str:
+    out = []
+    if self.network_identifier is not None:
+        out.append("Network:")
+        out.append(indent(str(self.network_identifier), 2))
+    out.append("Transaction: {}".format(self.transaction_identifier.hash))
+    out.append("Direction: {}".format(self.direction))
+    return "\n".join(*out)
+
+RelatedTransaction.__str__ = str_RelatedTransaction
+
+def str_Transaction(self : Transaction) -> str:
+    out = ["Transaction id: {}".format(self.transaction_identifier.hash)]
+    out.append("Operations:")
+    for operation in self.operations:
+        op = "- {}".format(operation)
+        out.append(indent(op, 2))
+    if self.related_transactions is not None:
+        out.append("Related Transactions:")
+        for related in self.related_transactions:
+            rt = "- {}".format(related)
+            out.append(indent(rt, 2))
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+TransactionIdentifier.__str__ = str_Transaction
+
+def str_Block(self : Block) -> str:
+    out = ["Block:"]
+    out.append(indent(str(self.block_identifier), 2))
+    out.append("Parent Block:")
+    out.append(indent(str(self.parent_block_identifier), 2))
+    out.append("Timestamp: {}".format(self.timestamp))
+    out.append("Transactions:")
+    for tran in self.transactions:
+        t = "- {}".format(tran)
+        out.append(indent(t, 2))
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+Block.__str__ = str_Block
+
+def str_BlockResponse(self : BlockResponse) -> str:
+    out = []
+    if self.block is not None:
+        out.append("Block")
+        out.append(indent(str(self.block), 2))
+    if self.other_transactions is not None:
+        out.append("Other Transactions:")
+        for tid in self.other_transactions:
+            ot = "- {}".format(tid.hash)
+            out.append(indent(ot, 2))
+    if out:
+        return "\n".join(*out)
+    return ""    
+
+
     

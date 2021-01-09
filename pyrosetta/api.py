@@ -579,6 +579,7 @@ class RosettaAPI(object):
 
         return self._unspent_coins(network_id, account_id, include_mempool, currencies)
 
+
 class RosettaAPIExt(RosettaAPI):
     """
     This API object will include some generalized helper methods, that can't be guarenteed to
