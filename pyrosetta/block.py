@@ -3,7 +3,6 @@ from typing import Optional
 import requests
 
 from .models import (
-    BlockIdentifier,
     BlockRequest,
     BlockResponse,
     BlockTransactionRequest,
@@ -46,7 +45,8 @@ def transaction(api_url : str, network_id : NetworkIdentifier, block_id : BlockI
 
     Returns
     -------
-    BlockTransactionResponse
+    Transaction
     """
     req = BlockTransactionRequest(network_identifier=network_id, block_identifier=block_id, transaction_identifier=transaction_id)
-    return get_block_transaction(api_url, req, session)
+    resp = get_block_transaction(api_url, req, session)
+    return resp.transaction

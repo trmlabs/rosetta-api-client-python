@@ -6,9 +6,14 @@ from .models import (
     AccountBalanceResponse,
     AccountCoinsResponse,
     AccountIdentifier,
+    BlockIdentifier,
+    BlockResponse,
+    BlockTransactionResponse,
     NetworkIdentifier,
     NetworkOptionsResponse,
-    NetworkStatusResponse
+    NetworkStatusResponse,
+    MempoolTransactionResponse,
+    TransactionIdentifier
 )
 
 from .utils import (
@@ -20,6 +25,8 @@ from .utils import (
 
 import .network as net
 import .account as acnt
+import .block as blk
+import .mempool as memp
 
 class RosettaAPI(object):
 
@@ -579,6 +586,255 @@ class RosettaAPI(object):
 
         return self._unspent_coins(network_id, account_id, include_mempool, currencies)
 
+    def _block(self, network_id : NetworkIdentifier, block_id : PartialBlockIdentifier) -> BlockResponse:
+        """
+        Private method for the get block method to proivde an interface that
+        supports calls with existing objects.
+        """
+        return blk.block(self.url, network_id, block_id, self.session)
+
+    def block_on_current_network(self, block_height : Optional[int] = None, block_hash : Optional[str] = None) -> BlockResponse:
+        """
+        Get a block on the current network by either block height, or its hash.
+
+        NOTE: At least the `block_height` or `block_hash` needs to be specified.
+
+        Parameters
+        ----------
+        block_height: int, optional
+            The index of the block
+        block_hash: str, optional
+            The hash of the block.
+
+        Returns
+        -------
+        BlockResponse
+            block: Block
+            other_transactions: list[TransactionIdentifier], optional
+        
+        Raises
+        ------
+        ValueError: if neither `block_height` or `block_hash` are specified.
+        """
+        try:
+            block_id = make_PartialBlockIdentifier(block_height, block_hash)
+        except ValueError:
+            raise ValueError("Either the `block_height` or the `block_hash` must be specified.")
+        return self._block(self.current_network, block_id)
+
+    def block_on_network(self, blockchain : str, network : str, 
+                         block_height : Optional[int] = None, block_hash : Optional[str] = None,
+                         subnetwork : Optional[str] = None, subnetwork_metadata : Optional[Dict[str, Any]] = None) -> BlockResponse:
+        
+        """
+        Get a block on the specified network by either block height, or its hash.
+
+        NOTE: At least the `block_height` or `block_hash` needs to be specified.
+
+        Parameters
+        ----------
+        blockchain: str
+            The name of the blockchain. Ex: 'bitcoin'
+        network: str
+            The chain-id or network identifier. Ex: 'mainnet' or 'testnet'
+        block_height: int, optional
+            The index of the block
+        block_hash: str, optional
+            The hash of the block.
+        subnetwork: str, optional
+            The name or identifier of the subnetwork if needed. Ex: 'shard-1'
+        subnetwork_metadata: dict[str, Any], optional
+            Any additional metadata needed to identify the subnetwork. See the
+            individual node implementation to verifiy if additional metadata is needed.
+
+        Returns
+        -------
+        BlockResponse
+            block: Block
+            other_transactions: list[TransactionIdentifier], optional
+        """
+        network_id = make_NetworkIdentifier(blockchain, network, subnetwork, subnetwork_metadata)
+        try:
+            block_id = make_PartialBlockIdentifier(block_height, block_hash)
+        except ValueError:
+            raise ValueError("Either the `block_height` or the `block_hash` must be specified.")
+        return self._block(network_id, block_id)
+
+    def _block_transaction(self, network_id : NetworkIdentifier, block_id : BlockIdentifier, transaction_id : TransactionIdentifier) -> BlockTransactionResponse:
+        """
+        Private method for the get block transaction method to proivde an interface that
+        supports calls with existing objects.
+        """
+        return blk.transaction(self.url, network_id, block_id, transaction_id, self.session)
+
+    def block_transaction_on_current_network(self, block_height : int, block_hash : str, transaction_hash : str) -> Transaction:
+        """
+        Get the specified transaciton on the given block for the current network.
+
+        Parameters
+        ----------
+        block_height: int
+            The index of the block.
+        block_hash: str
+            The hash of the block.
+        transaction_hash: str
+            The hash of the transaction.
+
+        Returns
+        -------
+        Transaction
+            transaction_identifier: TransactionIdentifier
+            operations: list[Operation]
+            related_transactions: list[RelatedTransaction], optional
+            metadata: dict[str, Any], optional
+        """
+        block_id = BlockIdentifier(index=block_height, hash=block_hash)
+        transaction_id = TransactionIdentifier(hash=transaction_hash)
+        return self._block_transaction(self.current_network, block_id, transaction_id)
+
+
+    def block_transaction_on_network(self, blockchain : str, network : str, 
+                                     block_height: int, block_hash : str, transaction_hash : str,
+                                     subnetwork : Optional[str] = None, subnetwork_metadata : Optional[Dict[str, Any]] = None) -> Transaction:
+        """
+        Get the specified transaction on the given block for the specified network.
+
+        Parameters
+        ----------
+        blockchain: str
+            The name of the blockchain. Ex: 'bitcoin'
+        network: str
+            The chain-id or network identifier. Ex: 'mainnet' or 'testnet'
+        block_height: int
+            The index of the block.
+        block_hash: str
+            The hash of the block.
+        transaction_hash: str
+            The hash of the transaction.
+        subnetwork: str, optional
+            The name or identifier of the subnetwork if needed. Ex: 'shard-1'
+        subnetwork_metadata: dict[str, Any], optional
+            Any additional metadata needed to identify the subnetwork. See the
+            individual node implementation to verifiy if additional metadata is needed.
+        
+        Returns
+        -------
+        Transaction
+            transaction_identifier: TransactionIdentifier
+            operations: list[Operation]
+            related_transactions: list[RelatedTransaction], optional
+            metadata: dict[str, Any], optional
+        """
+        network_id = make_NetworkIdentifier(blockchain, network, subnetwork, subnetwork_metadata)
+        block_id = BlockIdentifier(index=block_height, hash=block_hash)
+        transaction_id = TransactionIdentifier(hash=transaction_hash)
+        return self._block_transaction(network_id, block_id, transaction_id)
+
+    def _all_mempool_transactions(self, network_id : NetworkIdentifier, **kwargs) -> List[TransactionIdentifier]:
+        """
+        Private method for the get all mempool transaction method to proivde an interface that
+        supports calls with existing objects.
+        """
+        return memp.all_transactions(self.url, network_id, self.session, **kwargs)
+
+    def all_mempool_transactions_on_current_network(self, **kwargs) -> List[TransactionIdentifier]:
+        """
+        Get all the transactions in the mempool of the current network.
+
+        Parameters
+        ----------
+        **kwargs
+            Any additional metadata to be passed along to the /mempool request. 
+            See the individual node implementation to verify if additional
+            metadata is needed.
+
+        Returns
+        -------
+        list[TransactionIdentifier]
+        """
+        return self._all_mempool_transactions(self.current_network, **kwargs)
+
+    def all_mempool_transactions_on_network(self, blockchain : str, network : str, subnetwork : 
+                                        Optional[str] = None, subnetwork_metadata : Optional[Dict[str, Any]] = None, 
+                                        **kwargs) -> List[TransactionIdentifier]:
+        """
+        Get all the transactions in the mempool of the specified network.
+
+        Parameters
+        ----------
+        blockchain: str
+            The name of the blockchain. Ex: 'bitcoin'
+        network: str
+            The chain-id or network identifier. Ex: 'mainnet' or 'testnet'
+        subnetwork: str, optional
+            The name or identifier of the subnetwork if needed. Ex: 'shard-1'
+        subnetwork_metadata: dict[str, Any], optional
+            Any additional metadata needed to identify the subnetwork. See the
+            individual node implementation to verifiy if additional metadata is needed.
+        **kwargs
+            Any additional metadata to be passed along to the /mempool request. 
+            See the individual node implementation to verify if additional
+            metadata is needed.
+        """
+        network_id = make_NetworkIdentifier(blockchain, network, subnetwork, subnetwork_metadata)
+        return self._all_mempool_transactions(network_id, **kwargs)
+
+
+    def _mempool_transaction(self, network_id : NetworkIdentifier, transaction_id : TransactionIdentifier) -> MempoolTransactionResponse:
+        """
+        Private method for the get transaction from mempool method to proivde an interface that
+        supports calls with existing objects.
+        """
+        return memp.transaction(self.url, network_id, transaction_id, self.session)
+
+    def mempool_transaction_on_current_network(self, transaction_hash : str) -> MempoolTransactionResponse:
+        """
+        Get the specified transaction from the mempool of the current network.
+
+        Parameters
+        ----------
+        transaction_hash: str
+            The hash of the transaction.
+
+        Returns
+        -------
+        MempoolTransactionResponse
+            transaction_identifier: TransactionIdentifier
+            metadata: dict[str, Any], optional
+        """
+        transaction_id = TransactionIdentifier(hash=transaction_hash)
+        return self._mempool_transaction(self.current_network, transaction_id)
+
+
+    def mempool_transaction_on_network(self, blockchain : str, network : str, transaction_hash : str,
+                                       subnetwork : Optional[str] = None, 
+                                       subnetwork_metadata : Optional[Dict[str, Any]] = None) -> MempoolTransactionResponse:
+        """
+        Get the specified transaction from the mempool on the specified network.
+
+        Parameters
+        ----------
+        blockchain: str
+            The name of the blockchain. Ex: 'bitcoin'
+        network: str
+            The chain-id or network identifier. Ex: 'mainnet' or 'testnet'
+        transaction_hash: str
+            The hash of the transaction
+        subnetwork: str, optional
+            The name or identifier of the subnetwork if needed. Ex: 'shard-1'
+        subnetwork_metadata: dict[str, Any], optional
+            Any additional metadata needed to identify the subnetwork. See the
+            individual node implementation to verifiy if additional metadata is needed.
+        
+        Returns
+        -------
+        MempoolTransactionResponse
+            transaction_identifier: TransactionIdentifier
+            metadata: dict[str, Any], optional
+        """
+        network_id = NetworkIdentifier(blockchain, network, subnetwork, subnetwork_metadata)
+        transaction_id = TransactionIdentifier(hash=transaction_hash)
+        return self._mempool_transaction(network_id, transaction_id)
 
 class RosettaAPIExt(RosettaAPI):
     """

@@ -301,7 +301,17 @@ def str_BlockResponse(self : BlockResponse) -> str:
             out.append(indent(ot, 2))
     if out:
         return "\n".join(*out)
-    return ""    
+    return ""
 
+BlockResponse.__str__ = str_BlockResponse
 
-    
+def str_MempoolTransactionResponse(self : MempoolTransactionResponse) -> str:
+    out = ["Transaction:"]
+    out.append(indent(str(self.transaction), 2))
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+MempoolTransactionResponse.__str__ = str_MempoolTransactionResponse    

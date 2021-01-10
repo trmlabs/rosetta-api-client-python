@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Iterable, Optional, Union
 
 from ..models import (
     AccountIdentifier,
+    BlockIdentifier,
     Currency,
     NetworkIdentifier,
     PartialBlockIdentifier,
