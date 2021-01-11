@@ -27,6 +27,9 @@ import .network as net
 import .account as acnt
 import .block as blk
 import .mempool as memp
+import .construction as cnst
+import .events as evnt
+import .search as srch
 
 class RosettaAPI(object):
 
