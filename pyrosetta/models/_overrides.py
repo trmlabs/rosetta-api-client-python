@@ -269,7 +269,7 @@ def str_Transaction(self : Transaction) -> str:
         out.append(indent(md, 2))
     return "\n".join(*out)
 
-TransactionIdentifier.__str__ = str_Transaction
+Transaction.__str__ = str_Transaction
 
 def str_Block(self : Block) -> str:
     out = ["Block:"]
@@ -314,4 +314,136 @@ def str_MempoolTransactionResponse(self : MempoolTransactionResponse) -> str:
         out.append(indent(md, 2))
     return "\n".join(*out)
 
-MempoolTransactionResponse.__str__ = str_MempoolTransactionResponse    
+MempoolTransactionResponse.__str__ = str_MempoolTransactionResponse
+
+def str_ConstructionDeriveResponse(self : ConstructionDeriveResponse) -> str:
+    out = []
+    if self.address is not None:
+        out.append("Address: {}".format(self.address))
+    if self.account_identifier is not None:
+        out.append("Account:")
+        out.append(indent(str(self.account_identifier), 2))
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+ConstructionDeriveResponse.__str__ = str_ConstructionDeriveResponse
+
+def str_TransactionIdentifierResponse(self : TransactionIdentifierResponse) -> str:
+    out = ["Transaction: {}".format(self.transaction_identifier.hash)]
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+TransactionIdentifierResponse.__str__ = str_TransactionIdentifierResponse
+
+def str_ConstructionMetadataResponse(self : ConstructionMetadataResponse) -> str:
+    out = ["Metadata:"]
+    md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+    out.append(indent(md, 2))
+    if self.suggested_fee is not None:
+        out.append("Suggested Fee(s):")
+        fees = "\n".join(["- {}".format(str(amt)) for amt in self.suggested_fee])
+        out.append(indent(fees, 2))
+    return "\n".join(*out)
+
+ConstructionMetadataResponse.__str__ = str_ConstructionMetadataResponse
+
+def str_ConstructionParseResponse(self : ConstructionParseResponse) -> str:
+    out = ["Operations:"]
+    ops = "\n".join(["- {}".format(str(op)) for op in self.operations])
+    out.append(indent(ops, 2))
+    if self.signers is not None:
+        out.append("Signers:")
+        sigs = "\n".join(["- {}".format(sig) for sig in self.signers])
+        out.append(indent(sigs, 2))
+    if self.account_identifier_signers is not None:
+        out.append("Signers:")
+        sigs = "\n".join(["- {}".format(sig) for sig in self.account_identifier_signers])
+        out.append(indent(sigs, 2))
+    if self.metadata:
+        out.append("Additional Metadata:")
+        md = "\n".join(["- {}: {}".format(key, val) for key, val in self.metadata.items()])
+        out.append(indent(md, 2))
+    return "\n".join(*out)
+
+ConstructionParseResponse.__str__ = str_ConstructionParseResponse
+
+def str_SigningPayload(self : SigningPayload) -> str:
+    out = []
+    if self.address is not None:
+        out.append("Address: {}".format(self.address))
+    if self.account_identifier is not None:
+        out.append("Account:")
+        out.append(indent(str(self.account_identifier), 2))
+    out.append("Hex Bytes: {}".format(self.hex_bytes))
+    if self.signature_type is not None:
+        out.append("Signature Type: {}".format(self.signature_type))
+    return "\n".join(*out)
+
+SigningPayload.__str__ = str_SigningPayload
+
+def str_ConstructionPayloadsResposne(self : ConstructionPayloadsResponse) -> str:
+    out = ["Unsigned Transaction: {}".format(self.unsigned_transaction)]
+    out.append("Payloads:")
+    ps = "\n".join(["- {}".format(str(payload)) for payload in self.payloads])
+    out.append(indent(ps, 2))
+    return "\n".join(*put)
+
+ConstructionPayloadsResponse.__str__ = str_ConstructionPayloadsResposne
+
+def str_ConstructionPreprocessResponse(self : ConstructionPreprocessResponse) -> str:
+    out = []
+    if self.options is not None:
+        out.append("Options:")
+        opts = "\n".join(["- {}: {}".format(key, val) for key, val in self.options.items()])
+        out.append(indent(str(opts), 2))
+    if self.required_public_keys is not None:
+        out.append("Required Public Keys:")
+        pub_keys = "\n".join(["- {}".format(str(act)) for act in self.required_public_keys])
+    if out:
+        return "\n".join(*out)
+    return ""
+
+ConstructionPreprocessResponse.__str__ = str_ConstructionPreprocessResponse
+
+def str_BlockEvent(self : BlockEvent) -> str:
+    out = ["Sequence: {}".format(self.sequence)]
+    out.append("Block:")
+    out.append(indent(str(self.block_identifier), 2))
+    out.append("Type: {}".format(self.type))
+    return "\n".join(*out)
+
+BlockEvent.__str__ = str_BlockEvent
+
+def str_EventsBlocksResponse(self : EventsBlocksResponse) -> str:
+    out = ["Max Sequence: {}".format(self.max_sequence)]
+    bes = "\n".join(["- {}".format(event) for event in self.events])
+    out.append(indent(bes, 2))
+    return "\n".join(*out)
+
+EventsBlocksResponse.__str__ = str_EventsBlocksResponse
+
+def str_BlockTransaction(self : BlockTransaction) -> str:
+    out = ["Block:"]
+    out.append(indent(str(self.block_identifier), 2))
+    out.append("Transaction:")
+    out.append(indent(str(self.transaction), 2))
+    return "\n".join(*out)
+
+BlockTransaction.__str__ = str_BlockTransaction
+
+def str_SearchTransactionsResponse(self : SearchTransactionsResponse) -> str:
+    out = ["Transactions:"]
+    txs = "\n".join(["- {}".format(str(tx)) for tx in self.transactions])
+    out.append(indent(txs, 2))
+    out.append("Total Count: {}".format(self.total_count))
+    if self.next_offset is not None:
+        out.append("Next Offset: {}".format(self.next_offset))
+    return "\n".join(*out)
+
+SearchTransactionsResponse.__str__ = str_SearchTransactionsResponse

@@ -147,3 +147,9 @@ def make_Currency(symbol : str, decimals : int, metadata : Optional[Dict[str, An
         Any additional metadata related to the currency itself.
     """
     return Currency(symbol=symbol, decimals=decimals, metadata=metadata)
+
+def make_Signatures():
+    pass
+
+def make_Signature():
+    pass

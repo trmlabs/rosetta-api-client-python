@@ -11,7 +11,7 @@ from ..models import (
 
 from ..utils.communication import post_request
 
-def get_range_of_block_events(session : Session, api_url : str, req : EventsBlocksRequest, session : Optional[requests.Session] = None) -> EventsBlocksResponse:
+def get_range_of_block_events(api_url : str, req : EventsBlocksRequest, session : Optional[requests.Session] = None) -> EventsBlocksResponse:
     """
     req: EventsBlocksRequest
     resp: EventsBlocksResponse
@@ -21,7 +21,7 @@ def get_range_of_block_events(session : Session, api_url : str, req : EventsBloc
     resp = post_request(url, req.json(), session)
     return EventsBlocksResponse(**resp.json())
 
-def search_for_transactions(session : Session, api_url : str, req : SearchTransactionsRequest, session : Optional[requests.Session] = None) -> EventsBlocksResponse:
+def search_for_transactions(api_url : str, req : SearchTransactionsRequest, session : Optional[requests.Session] = None) -> EventsBlocksResponse:
     """
     req: SearchTransactionsRequest
     resp: SearchTransactionsResponse
