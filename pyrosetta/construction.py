@@ -65,6 +65,7 @@ def derive(api_url : str, network_id : NetworkIdentifier, public_key : PublicKey
     api_url: str
     network_id: NetworkIdentifier
     public_key: PublicKey
+    session: requests.Session, optional
     **kwargs
         Any additional metadata to be passed along to the /construction/derive request. 
         See the individual node implementation to verify if additional
@@ -195,7 +196,7 @@ def preprocess(api_url : str, network_id : NetworkIdentifier, operations : List[
     opertations: list[Operation]
     metadata: dict[str, Any], optional
     max_fee: list[Amount], optional
-    suggest_fee_multiplier: float, optional
+    suggested_fee_multiplier: float, optional
     session: requests.Session, optional
 
     Returns

@@ -10,6 +10,8 @@ from ..models import (
     Currency,
     NetworkIdentifier,
     PartialBlockIdentifier,
+    Operation,
+    OperationIdentifier,
     SubAccountIdentifier,
     SubNetworkIdentifier
 )
@@ -147,6 +149,9 @@ def make_Currency(symbol : str, decimals : int, metadata : Optional[Dict[str, An
         Any additional metadata related to the currency itself.
     """
     return Currency(symbol=symbol, decimals=decimals, metadata=metadata)
+
+def make_Operation(index : int, network_index : Optional[int] : None):
+    pass
 
 def make_Signatures():
     pass

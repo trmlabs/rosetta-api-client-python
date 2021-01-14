@@ -6,14 +6,28 @@ from .models import (
     AccountBalanceResponse,
     AccountCoinsResponse,
     AccountIdentifier,
+    Amount,
     BlockIdentifier,
     BlockResponse,
     BlockTransactionResponse,
+    CoinIdentifier,
+    ConstructionDeriveResponse,
+    ConstructionMetadataResponse,
+    ConstructionParseResponse,
+    ConstructionPayloadsResponse,
+    Currency,
+    EventsBlocksResponse,
     NetworkIdentifier,
     NetworkOptionsResponse,
     NetworkStatusResponse,
     MempoolTransactionResponse,
-    TransactionIdentifier
+    Operation,
+    Operator, 
+    PublicKey,
+    SearchTransactionsResponse,
+    Signature,
+    TransactionIdentifier,
+    TransactionIdentifierResponse
 )
 
 from .utils import (
@@ -27,7 +41,7 @@ import .network as net
 import .account as acnt
 import .block as blk
 import .mempool as memp
-import .construction as cnst
+import .construction as cst
 import .events as evnt
 import .search as srch
 
@@ -838,6 +852,91 @@ class RosettaAPI(object):
         network_id = NetworkIdentifier(blockchain, network, subnetwork, subnetwork_metadata)
         transaction_id = TransactionIdentifier(hash=transaction_hash)
         return self._mempool_transaction(network_id, transaction_id)
+
+
+    def _combine(self, network_id : NetworkIdentifier, unsigned_transaction : str, signatures : List[Signature]) -> str:
+        """
+        Private method for the construction combine method.
+        """
+        return cst.combine(self.url, network_id, unsigned_transaction, signatures, self.session)
+
+    def _derive(self, network_id : NetworkIdentifier, public_key : PublicKey, **kwargs) -> ConstructionDeriveResponse:
+        """
+        Private method for the derive method
+        """
+        return cst.derive(self.url, network_id, public_key, self.session, **kwargs)
+
+    def _signed_transaction_hash(self, network_id : NetworkIdentifier, signed_transaction : str) -> TransactionIdentifierResponse:
+        """
+        Private method for the hash method.
+        """
+        return cst.signed_transaction_hash(self.url, network_id, signed_transaction)
+
+    def _metadata(self, network_id : NetworkIdentifier, options : Optional[Dict[str, Any]] = None, public_keys : Optional[List[PublicKey]] = None) -> ConstructionMetadataResponse:
+        """
+        Private method for metadata method.
+        """
+        return cst.metadata(self.url, network_id, options, public_keys, self.session)
+
+    def _parse(self, network_id : NetworkIdentifier, signed : bool, transaction : str) -> ConstructionParseResponse:
+        """
+        Private method for the parse method.
+        """
+        return cst.parse(self.url, network_id, signed, transaction, self.session)
+
+    def _payloads(self, network_id : NetworkIdentifier, metadata : Optional[Dict[str, Any]] = None, public_keys : Optional[List[PublicKey]] = None) -> ConstructionPayloadsResponse:
+        """
+        Private method for the payloads method.
+        """
+        return cst.payloads(self.url, network_id, metadata, public_keys, self.session)
+
+    def _preprocess(self, network_id : NetworkIdentifier, operations : List[Operation], metadata : Optional[Dict[str, Any]] = None, max_fee : Optional[List[Amount]] = None, suggested_fee_multiplier : Optional[float] = None) -> ConstructionPreprocessResponse:
+        """
+        Private method for the preprocess method.
+        """
+        return cst.preprocess(self.url, network_id, operations, metadata, max_fee, suggested_fee_multiplier, self.session)
+
+    def preprocess_operations_on_current_network(self, metadata : Optional[Dict[str, Any]] = None, max_fee : Optional[List[Amount]] = None, suggested_fee_multiplier : Optional[float] = None) -> ConstructionPreprocessResponse:
+        return None
+    
+    def _submit(self, network_id : NetworkIdentifier, signed_transaction : str) -> TransactionIdentifierResponse:
+        """
+        Private method for the submit method
+        """
+        return cst.submit(self.url, network_id, signed_transaction, self.session)
+
+    def submit_signed_transaction_on_current_network(self, signed_transaction : str) -> TransactionIdentifierResponse:
+        """
+        Submit a signed transaction onto the current network.
+
+        Parameters
+        ----------
+        signed_transaction: str
+
+        Returns
+        -------
+        TransactionIdentifierResponse
+            transaction_identifier: TransactionIdentifer
+            metadata: dict[str, Any], optional
+        """
+        return self._submit(self.current_network, signed_transaction)
+    
+    def submit_signed_transaction_on_network(self, blockchain : str, network : str, signed_transaction : str, subnetwork : Optional[str] = None, subnetwork_metadata : Optional[Dict[str, Any]] = None) -> TransactionIdentifierResponse:
+        network_id = make_NetworkIdentifier(blockchain, network, subnetwork, subnetwork_metadata)
+        return self._submit(network_id, signed_transaction)
+    
+    def _events_blocks(self, network_id : NetworkIdentifier, offset : Optional[int] = None, limit : Optional[int] = None) -> EventsBlocksResponse:
+        """
+        Private method for the events blocks method.
+        """
+        return evnt.blocks(self.url, network_id, offset, limit, self.session)
+
+    def _search_transactions(self, network_id : NetworkIdentifier, operator : Optional[Operator] = "and", max_block : Optional[int] = None, offset : Optional[int] = None, transaciton_id : Optional[TransactionIdentifier] = None, account_id : Optional[AccountIdentifier] = None, coin_id : Optional[CoinIdentifer] = None, currency : Optional[Currency] = None, status : Optional[str] = None, type_ : Optional[str] = None, address : Optional[str] = None, success : Optional[bool] = None) -> SearchTransactionsResponse:
+        """
+        Private method for the search transactions method.
+        """
+        return srch.transacitons(self, network_id, operator, max_block, offset, limit, transaciton_id, account_id, currency, status, type_, address, success, self.session)
+
 
 class RosettaAPIExt(RosettaAPI):
     """
