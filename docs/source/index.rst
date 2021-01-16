@@ -8,6 +8,7 @@ Welcome to Rosetta API Client Python's documentation!
 
 .. toctree::
    readme
+   modules
    :maxdepth: 2
    :caption: Contents:
 
