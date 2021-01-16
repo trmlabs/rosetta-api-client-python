@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional
 import requests
 
 from .models import (
+    Amount,
     ConstructionCombineRequest,
     ConstructionDeriveRequest,
     ConstructionDeriveResponse,
@@ -122,7 +123,7 @@ def metadata(api_url : str, network_id : NetworkIdentifier, options : Optional[D
     req = ConstructionMetadataRequest(network_identifier=network_id, options=options, public_keys=public_keys)
     return get_metadata_for_transaction_construction(api_url, req, session)
 
-def parse(api_url : str, network_id : NetworkIdentifier, signed : bool, transaction : str, session : Optional[request.Session]= None) -> ConstructionParseResponse:
+def parse(api_url : str, network_id : NetworkIdentifier, signed : bool, transaction : str, session : Optional[requests.Session]= None) -> ConstructionParseResponse:
     """
     Called on both signed and unsigned transactions to understand the intent of transaction.
 
@@ -151,7 +152,7 @@ def parse(api_url : str, network_id : NetworkIdentifier, signed : bool, transact
 
 def payloads(api_url : str, network_id : NetworkIdentifier, operations : List[Operation], 
              metadata : Optional[Dict[str, Any]] = None, public_keys : Optional[List[PublicKey]] = None, 
-             session : Optional[requests.Session]) -> ConstructionPayloadsResponse:
+             session : Optional[requests.Session] = None) -> ConstructionPayloadsResponse:
     """
     Called with an array of operations and the metadata from the metadata method.
     
@@ -208,7 +209,7 @@ def preprocess(api_url : str, network_id : NetworkIdentifier, operations : List[
     req = ConstructionPreprocessRequest(network_identifier=network_id, operations=operations, metadata=metadata, max_fee=max_fee, suggested_fee_multiplier=suggested_fee_multiplier)
     return create_request_to_fetch_metadata(api_url, req, session)
 
-def submit(api_url : str, network_id : NetworkIdentifier, signed_transaction : str, session : Optional[requests.Sesison] = None) -> TransactionIdentifierResponse:
+def submit(api_url : str, network_id : NetworkIdentifier, signed_transaction : str, session : Optional[requests.Session] = None) -> TransactionIdentifierResponse:
     """
     Submit a pre-signed transaction to the node.
 

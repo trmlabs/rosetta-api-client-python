@@ -19,7 +19,7 @@ from .models import (
 from .endpoints.data import (
     get_network_options,
     get_network_status,
-    get_supported_networks,
+    get_available_networks,
     
 )
 
@@ -33,7 +33,7 @@ class NetworkOverview(NamedTuple):
         opts = "Implementation Details:\n{}\n".format(self.options)
         status = "Status:\n{}".format(self.status)
 
-def discover(api_url : str, session : Optional[request.Session] = None, network_metadata : Optional[Dict[str, Any]] = None, **kwargs) -> List[NetworkOverview]:
+def discover(api_url : str, session : Optional[requests.Session] = None, network_metadata : Optional[Dict[str, Any]] = None, **kwargs) -> List[NetworkOverview]:
     """
     Discover the availble networks supported by the Rosetta server
     at the api_url and any information about them.
@@ -99,7 +99,7 @@ def list_supported(api_url : str, session : Optional[requests.Session] = None, *
     return resp.network_identifiers
 
 
-def supported_options(api_url : str, network_identifier : NetworkIdentifier, session : Optional[requests.Session] = None, **kwargs) -> ImplementationDetails:
+def supported_options(api_url : str, network_identifier : NetworkIdentifier, session : Optional[requests.Session] = None, **kwargs) -> NetworkOptionsResponse:
     """
     Get the supported options of a specified network 
     and usage information for the Rosetta server at the api_url.

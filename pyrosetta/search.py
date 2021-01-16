@@ -8,7 +8,7 @@ from .models import (
     Currency,
     Operator,
     NetworkIdentifier,
-    TransactionIdentifier
+    TransactionIdentifier,
     SearchTransactionsRequest,
     SearchTransactionsResponse
 )

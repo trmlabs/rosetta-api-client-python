@@ -5,8 +5,8 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='rosetta-api-client-python',
-    author='AUTHOR',
-    author_email='AUTHOR_EMAIL',
+    author='blockjoe, gretha',
+    author_email='joehabel46@gmail.com',
     description='A python client for interacting with Rosetta endpoints',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -17,5 +17,8 @@ setuptools.setup(
     install_requires=[
         'pydantic',
         'requests'
-    ]
+    ],
+    extras_require = {
+        'dev' : ['datamodel-code-generator', 'sphinx', 'sphinx-rtd-theme', 'm2r2']
+    }
 )

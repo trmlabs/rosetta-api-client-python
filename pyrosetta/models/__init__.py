@@ -1,3 +1,3 @@
 from ._models import *
-import ._overrides
+from . import _overrides
 

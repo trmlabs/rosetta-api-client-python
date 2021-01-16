@@ -9,7 +9,7 @@ import requests
 from .models import (
     AccountBalanceRequest,
     AccountBalanceResponse,
-    AccountConinsRequest,
+    AccountCoinsRequest,
     AccountCoinsResponse,
     AccountIdentifier,
     Currency,

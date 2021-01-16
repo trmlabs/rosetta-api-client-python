@@ -3,6 +3,7 @@ from typing import Optional
 import requests
 
 from .models import (
+    BlockIdentifier,
     BlockRequest,
     BlockResponse,
     BlockTransactionRequest,
@@ -17,7 +18,7 @@ from .endpoints.data import (
     get_block_transaction
 )
 
-def block(api_url : str, network_id : NetworkIdentifier, block_id : PartialBlockIdentifier, session : Optional[requests.Sesion] = None) -> BlockResponse:
+def block(api_url : str, network_id : NetworkIdentifier, block_id : PartialBlockIdentifier, session : Optional[requests.Session] = None) -> BlockResponse:
     """
     Parameters
     ----------
@@ -33,7 +34,7 @@ def block(api_url : str, network_id : NetworkIdentifier, block_id : PartialBlock
     req = BlockRequest(network_identifier=network_id, block_identifier=block_id)
     return get_block(api_url, req, session)
 
-def transaction(api_url : str, network_id : NetworkIdentifier, block_id : BlockIdentifier, transaction_id : TransactionIdentifier, session : Optional[requests.Sesison] = None) -> BlockTransactionResponse:
+def transaction(api_url : str, network_id : NetworkIdentifier, block_id : BlockIdentifier, transaction_id : TransactionIdentifier, session : Optional[requests.Session] = None) -> BlockTransactionResponse:
     """
     Parameters
     ----------

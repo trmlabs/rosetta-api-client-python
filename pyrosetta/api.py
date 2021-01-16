@@ -9,10 +9,13 @@ from .models import (
     BlockIdentifier,
     BlockResponse,
     BlockTransactionResponse,
+    Currency,
     NetworkIdentifier,
     NetworkOptionsResponse,
     NetworkStatusResponse,
     MempoolTransactionResponse,
+    PartialBlockIdentifier,
+    Transaction,
     TransactionIdentifier
 )
 
@@ -23,13 +26,13 @@ from .utils import (
     make_PartialBlockIdentifier
 )
 
-import .network as net
-import .account as acnt
-import .block as blk
-import .mempool as memp
-import .construction as cnst
-import .events as evnt
-import .search as srch
+from . import network as net
+from . import account as acnt
+from . import block as blk
+from . import mempool as memp
+from . import construction as cnst
+from . import events as evnt
+from . import search as srch
 
 class RosettaAPI(object):
 
@@ -83,7 +86,7 @@ class RosettaAPI(object):
     def current_network(self) -> Optional[NetworkIdentifier]:
         return self._network_identifier
 
-    @network.setter
+    @current_network.setter
     def current_network(self, network_id: NetworkIdentifier) -> None:
         if not isinstance(network_id, NetworkIdentifier):
             raise ValueError("`current_network` must explicitly be a NetworkIdentifier. These are returned by the `supported_networks` method. If trying to set `current_network` by strings, see the `select_network` method.")
@@ -116,7 +119,7 @@ class RosettaAPI(object):
         
         return net.status(self.url, network_id, self.session, **kwargs)
     
-    def current_network_status(self, **kwargs) -> NetworkStatusRespone:
+    def current_network_status(self, **kwargs) -> NetworkStatusResponse:
         """
         Get the status of the current network.
         
@@ -325,7 +328,6 @@ class RosettaAPI(object):
         if selected_currency_metadata is not None:
             if selected_currency_symbols is None or selected_currency_decimals is None:
                 raise ValueError("If `selected_currency_metadata` is provided, both `selected_curerency_symbols` and `selected_currency_decimals` must be provided")
-        The name of the blockchain. Ex: 'bitcoin'
         if selected_currency_decimals is None and selected_currency_symbols is None and selected_currency_metadata is None:
             currencies = None
         else:
@@ -497,7 +499,6 @@ class RosettaAPI(object):
         if selected_currency_metadata is not None:
             if selected_currency_symbols is None or selected_currency_decimals is None:
                 raise ValueError("If `selected_currency_metadata` is provided, both `selected_curerency_symbols` and `selected_currency_decimals` must be provided")
-        The name of the blockchain. Ex: 'bitcoin'
         if selected_currency_decimals is None and selected_currency_symbols is None and selected_currency_metadata is None:
             currencies = None
         else:
@@ -866,7 +867,7 @@ class RosettaAPIExt(RosettaAPI):
         list[NetworkOverview]
             network: NetworkIdentifier
             options: NetworkOptionsResponse
-            status: NetworkStatusRespone
+            status: NetworkStatusResponse
 
         Fails When
         -----------

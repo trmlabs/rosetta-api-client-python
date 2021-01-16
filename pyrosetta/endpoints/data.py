@@ -1,11 +1,19 @@
-from requests import Session
+from typing import Optional
+
+import requests
 
 from ..models import (
     AccountBalanceRequest,
+    AccountBalanceResponse,
     AccountCoinsRequest,
+    AccountCoinsResponse,
     BlockRequest,
+    BlockResponse,
     BlockTransactionRequest,
+    BlockTransactionResponse,
+    MempoolResponse,
     MempoolTransactionRequest,
+    MempoolTransactionResponse,
     MetadataRequest,
     NetworkRequest,
     NetworkListResponse,
