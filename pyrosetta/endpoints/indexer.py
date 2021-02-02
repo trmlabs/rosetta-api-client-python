@@ -1,4 +1,5 @@
 from typing import Optional
+from urllib.parse import urljoin
 
 import requests
 
@@ -17,7 +18,7 @@ def get_range_of_block_events(api_url : str, req : EventsBlocksRequest, session 
     resp: EventsBlocksResponse
     ref: /events/blocks
     """
-    url = '{}/events/blocks'.format(api_url)
+    url = urljoin(api_url, 'events/blocks')
     resp = post_request(url, req.json(), session)
     return EventsBlocksResponse(**resp.json())
 
@@ -27,6 +28,6 @@ def search_for_transactions(api_url : str, req : SearchTransactionsRequest, sess
     resp: SearchTransactionsResponse
     ref: /search/transactions
     """
-    url = '{}/search/transactions'.format(api_url)
+    url = urljoin(api_url, 'search/transactions')
     resp = post_request(url, req.json(), session)
     return SearchTransactionsResponse(**resp.json())

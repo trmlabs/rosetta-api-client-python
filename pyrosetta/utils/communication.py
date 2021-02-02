@@ -18,6 +18,9 @@ def post_request(url : str, data : Dict[str, Any], session : Optional[requests.S
         a new one will be created and destroyed for the
         individual call.
     """
+    headers = {
+            'Content-Type': 'application/json'
+    }
     if session is not None:
-        return session.post(url, data=data)
-    return requests.post(url, data=data)
+        return session.post(url, headers=headers, data=data)
+    return requests.post(url, headers=headers, data=data)

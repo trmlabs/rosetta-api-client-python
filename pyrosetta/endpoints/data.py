@@ -1,4 +1,5 @@
 from typing import Optional
+from urllib.parse import urljoin
 
 import requests
 
@@ -29,7 +30,7 @@ def get_available_networks(api_url : str, req : MetadataRequest, session : Optio
     resp: NetworkListResponse
     ref: /network/list
     """
-    url = '{}/network/list'.format(api_url)
+    url = urljoin(api_url, 'network/list')
     resp = post_request(url, req.json(), session)
     return NetworkListResponse(**resp.json())
 
@@ -39,7 +40,7 @@ def get_network_options(api_url : str, req: NetworkRequest, session : Optional[r
     resp: NetworkOptionsResponse
     ref: /network/options
     """
-    url = '{}/network/options'.format(api_url)
+    url = urljoin(api_url, 'network/options')
     resp = post_request(url, req.json(), session)
     return NetworkOptionsResponse(**resp.json())
 
@@ -49,7 +50,7 @@ def get_network_status(api_url : str, req: NetworkRequest, session : Optional[re
     resp: NetworkStatusResponse
     ref: /network/status
     """
-    url = '{}/network/status'.format(api_url)
+    url = urljoin(api_url, 'network/status')
     resp = post_request(url, req.json(), session)
     return NetworkStatusResponse(**resp.json())
 
@@ -59,7 +60,7 @@ def get_account_balance(api_url : str, req : AccountBalanceRequest, session : Op
     resp: AccountBalanceResponse
     ref: /account/balance
     """
-    url = '{}/account/balance'.format(api_url)
+    url = urljoin(api_url, 'account/balance')
     resp = post_request(url, req.json(), session)
     return AccountBalanceResponse(**resp.json())
 
@@ -69,7 +70,7 @@ def get_account_unspent_coins(api_url : str, req : AccountCoinsRequest, session 
     resp: AccountCoinsResponse
     ref: /account/coins
     """
-    url = '{}/account/coins'.format(api_url)
+    url = urljoin(api_url, 'account/coins')
     resp = post_request(url, req.json(), session)
     return AccountCoinsResponse(**resp.json())
 
@@ -80,7 +81,7 @@ def get_block(api_url : str, req : BlockRequest, session : Optional[requests.Ses
     resp: BlockResponse
     ref: /block
     """
-    url = '{}/block'.format(api_url)
+    url = urljoin(api_url, 'block')
     resp = post_request(url, req.json(), session)
     return BlockResponse(**resp.json())
 
@@ -91,7 +92,7 @@ def get_block_transaction(api_url : str, req : BlockTransactionRequest, session 
     resp: BlockTransactionResponse
     ref: /block/transaction
     """
-    url = '{}/block/transaction'.format(api_url)
+    url = urljoin(api_url, 'block/transaction')
     resp = post_request(url, req.json(), session)
     return BlockTransactionResponse(**resp.json())
 
@@ -103,7 +104,7 @@ def get_mempool_transaction_ids(api_url : str, req : NetworkRequest, session : O
     resp: MempoolResponse
     ref: /mempool
     """
-    url = '{}/mempool'.format(api_url)
+    url = urljoin(api_url, 'mempool')
     resp = post_request(url, req.json(), session)
     return MempoolResponse(**resp.json())
 
@@ -114,6 +115,6 @@ def get_mempool_transaction(api_url : str, req : MempoolTransactionRequest, sess
     resp: MempoolTransactionResponse
     ref: /mempool/transaction
     """
-    url = '{}/mempool/transaction'.format(api_url)
+    url = urljoin(api_url, 'mempool/transaction')
     resp = post_request(url, req.json(), session)
     return MempoolTransactionResponse(**resp.json())

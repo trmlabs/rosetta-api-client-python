@@ -1,4 +1,5 @@
 from typing import Optional
+from urllib.parse import urljoin
 
 import requests
 
@@ -29,7 +30,7 @@ def create_network_transaction_from_signatures(api_url : str, req : Construction
     resp: ConstructionCombineResponse
     ref: /construction/combine
     """
-    url = '{}/construction/combine'.format(api_url)
+    url = urljoin(api_url, 'construction/combine')
     resp = post_request(url, req.json(), session)
     return ConstructionCombineResponse(**resp.json())
 
@@ -39,7 +40,7 @@ def derive_account_id_from_pubkey(api_url : str, req : ConstructionDeriveRequest
     resp: ConstructionDeriveResponse
     ref: /construction/derive
     """
-    url = '{}/construction/derive'.format(api_url)
+    url = urljoin(api_url, 'construction/derive')
     resp = post_request(url, req.json(), session)
     return ConstructionDeriveResponse(**resp.json())
 
@@ -49,7 +50,7 @@ def get_hash_of_signed_transaction(api_url : str, req : ConstructionHashRequest,
     resp: TransactionIdentifierResponse
     ref: /construction/hash
     """
-    url = '{}/construction/hash'.format(api_url)
+    url = urljoin(api_url, 'construction/hash')
     resp = post_request(url, req.json(), session)
     return TransactionIdentifierResponse(**resp.json())
 
@@ -59,7 +60,7 @@ def get_metadata_for_transaction_construction(api_url : str, req : ConstructionM
     resp: ConstructionMetadataResponse
     ref: /construction/metadata
     """
-    url = '{}/construction/metadata'.format(api_url)
+    url = urljoin(api_url, 'construction/metadata')
     resp = post_request(url, req.json(), session)
     return ConstructionMetadataResponse(**resp.json())
 
@@ -69,7 +70,7 @@ def parse_transaction(api_url : str, req : ConstructionParseRequest, session : O
     resp: ConstructionParseResponse
     ref: /construction/parse
     """
-    url = '{}/construction/parse'.format(api_url)
+    url = urljoin(api_url, 'construction/parse')
     resp = post_request(url, req.json(), session)
     return ConstructionParseResponse(**resp.json())
 
@@ -79,7 +80,7 @@ def generate_unsigned_transaction_and_signing_payloads(api_url : str, req : Cons
     resp: ConstructionPayloadsResponse
     ref: /construction/payloads
     """
-    url = '{}/construction/payloads'.format(api_url)
+    url = urljoin(api_url, 'construction/payloads')
     resp = post_request(url, req.json(), session)
     return ConstructionPayloadsResponse(**resp.json())
 
@@ -89,7 +90,7 @@ def create_request_to_fetch_metadata(api_url : str, req : ConstructionPreprocess
     resp: ConstructionPreprocessResponse
     ref: /construction/preprocess
     """
-    url = '{}/construction/preprocess'.format(api_url)
+    url = urljoin(api_url, 'construction/preprocess')
     resp = post_request(url, req.json(), session)
     return ConstructionPreprocessResponse(**resp.json())
 
@@ -99,6 +100,6 @@ def submit_signed_transaction(api_url : str, req : ConstructionSubmitRequest, se
     resp: TransactionIdentifierResponse
     ref: /construction/submit
     """
-    url = '{}/construction/submit'.format(api_url)
+    url = urljoin(api_url, 'construction/submit')
     resp = post_request(url, req.json(), session)
     return TransactionIdentifierResponse(**resp.json())
