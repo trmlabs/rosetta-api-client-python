@@ -47,7 +47,7 @@ def balance(api_url : str, network_id: NetworkIdentifier, account_id : AccountId
     -------
     AccountBalanceResponse
     """
-    req = AccountBalanceRequest(network_id, account_id, block_id, currencies)
+    req = AccountBalanceRequest(network_identifier=network_id, account_identifier=account_id, block_identifier=block_id, currencies=currencies)
     return get_account_balance(api_url, req, session)
 
 def unspent_coins(api_url : str, network_id : NetworkIdentifier, account_id : AccountIdentifier, include_mempool : bool, currencies : Optional[List[Currency]] = None, session : Optional[requests.Session] = None) -> AccountCoinsResponse:
@@ -74,5 +74,5 @@ def unspent_coins(api_url : str, network_id : NetworkIdentifier, account_id : Ac
     --------
     AccountCoinsResponse
     """
-    req = AccountBalanceRequest(network_id, account_id, include_mempool, currencies)
+    req = AccountCoinsRequest(network_identifier=network_id, account_identifier=account_id, include_mempool=include_mempool, currencies=currencies)
     return get_account_unspent_coins(api_url, req, session)

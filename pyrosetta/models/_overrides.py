@@ -103,7 +103,7 @@ def str_Version(self : Version) -> str:
 Version.__str__ = str_Version
 
 def str_BlockIdentifier(self : BlockIdentifier) -> str:
-    return "Block Height: {}\nHash: {}".format(self.index, self.hash)
+    return "Block Height: {}\nHash: {}".format(self.index, self.hash_)
 
 BlockIdentifier.__str__ = str_BlockIdentifier
 
@@ -222,7 +222,7 @@ def str_Operation(self : Operation) -> str:
         for related in self.related_operations:
             out.append(indent(str(related),'  '))
     
-    out.append("type: {}".format(self.type)) 
+    out.append("type: {}".format(self.type_)) 
     if self.status is not None:
         out.append("Status: {}".format(self.status))
     if self.account is not None:
@@ -415,7 +415,7 @@ def str_BlockEvent(self : BlockEvent) -> str:
     out = ["Sequence: {}".format(self.sequence)]
     out.append("Block:")
     out.append(indent(str(self.block_identifier),'  '))
-    out.append("Type: {}".format(self.type))
+    out.append("Type: {}".format(self.type_))
     return "\n".join(out)
 
 BlockEvent.__str__ = str_BlockEvent

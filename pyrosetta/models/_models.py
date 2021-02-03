@@ -662,16 +662,16 @@ class Allow(BaseModel):
         description='If populated, `timestamp_start_index` indicates the first block index where block timestamps are considered valid (i.e. all blocks less than `timestamp_start_index` could have invalid timestamps). This is useful when the genesis block (or blocks) of a network have timestamp 0. If not populated, block timestamps are assumed to be valid for all available blocks.',
         ge=0.0,
     )
-    call_methods: List[str] = Field(
-        ...,
+    call_methods: Optional[List[str]] = Field(
+        None,
         description='All methods that are supported by the /call endpoint. Communicating which parameters should be provided to /call is the responsibility of the implementer (this is en lieu of defining an entire type system and requiring the implementer to define that in Allow).',
     )
-    balance_exemptions: List[BalanceExemption] = Field(
-        ...,
+    balance_exemptions: Optional[List[BalanceExemption]] = Field(
+        None,
         description='BalanceExemptions is an array of BalanceExemption indicating which account balances could change without a corresponding Operation. BalanceExemptions should be used sparingly as they may introduce significant complexity for integrators that attempt to reconcile all account balance changes. If your implementation relies on any BalanceExemptions, you MUST implement historical balance lookup (the ability to query an account balance at any BlockIdentifier).',
     )
-    mempool_coins: bool = Field(
-        ...,
+    mempool_coins: Optional[bool] = Field(
+        None,
         description="Any Rosetta implementation that can update an AccountIdentifier's unspent coins based on the contents of the mempool should populate this field as true. If false, requests to `/account/coins` that set `include_mempool` as true will be automatically rejected.",
     )
 

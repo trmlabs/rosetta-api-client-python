@@ -59,7 +59,7 @@ def make_AccountIdentifier(address : str, subaccount_address : Optional[str] = N
     AccountIdentifier
     """
     subaccount_id = None
-    if subnetwork_address is not None:
+    if subaccount_address is not None:
         subaccount_id = SubAccountIdentifier(address=subaccount_address, metadata=subaccount_metadata)
     return AccountIdentifier(address=address, sub_account=subaccount_id, metadata=kwargs)
 

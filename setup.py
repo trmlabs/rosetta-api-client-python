@@ -16,7 +16,9 @@ setuptools.setup(
     python_requires='>=3.7',
     install_requires=[
         'pydantic',
-        'requests'
+        'requests',
+        'json2html',
+        'pyyaml'
     ],
     extras_require = {
         'dev' : ['datamodel-code-generator', 'sphinx', 'sphinx-rtd-theme', 'm2r2']
