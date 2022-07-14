@@ -287,6 +287,11 @@ class NetworkIdentifier(BaseModel):
     )
     sub_network_identifier: Optional[SubNetworkIdentifier] = None
 
+    def dict(self, *args, **kwargs):
+        # Setting the subnetwork identifier as null for Cardano will result in a 500 error.
+        kwargs['exclude_none'] = True
+        return super().dict(*args, **kwargs)
+
 
 class AccountIdentifier(BaseModel):
     address: str = Field(
