@@ -82,7 +82,7 @@ def get_block(api_url : str, req : BlockRequest, session : Optional[requests.Ses
     ref: /block
     """
     url = urljoin(api_url, 'block')
-    resp = post_request(url, req.json(), session)
+    resp = post_request(url, req.json(by_alias=True), session)
     return BlockResponse(**resp.json())
 
     
@@ -93,7 +93,7 @@ def get_block_transaction(api_url : str, req : BlockTransactionRequest, session 
     ref: /block/transaction
     """
     url = urljoin(api_url, 'block/transaction')
-    resp = post_request(url, req.json(), session)
+    resp = post_request(url, req.json(by_alias=True), session)
     return BlockTransactionResponse(**resp.json())
 
 
