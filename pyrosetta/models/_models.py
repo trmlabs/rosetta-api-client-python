@@ -158,14 +158,14 @@ class Timestamp(BaseModel):
     )
 
 
-class CurveType(Enum):
+class CurveType(str, Enum):
     secp256k1 = 'secp256k1'
     secp256r1 = 'secp256r1'
     edwards25519 = 'edwards25519'
     tweedle = 'tweedle'
 
 
-class SignatureType(Enum):
+class SignatureType(str, Enum):
     ecdsa = 'ecdsa'
     ecdsa_recovery = 'ecdsa_recovery'
     ed25519 = 'ed25519'
@@ -173,7 +173,7 @@ class SignatureType(Enum):
     schnorr_poseidon = 'schnorr_poseidon'
 
 
-class CoinAction(Enum):
+class CoinAction(str, Enum):
     coin_created = 'coin_created'
     coin_spent = 'coin_spent'
 
@@ -191,23 +191,23 @@ class CoinChange(BaseModel):
     coin_action: CoinAction
 
 
-class ExemptionType(Enum):
+class ExemptionType(str, Enum):
     greater_or_equal = 'greater_or_equal'
     less_or_equal = 'less_or_equal'
     dynamic = 'dynamic'
 
 
-class BlockEventType(Enum):
+class BlockEventType(str, Enum):
     block_added = 'block_added'
     block_removed = 'block_removed'
 
 
-class Operator(Enum):
+class Operator(str, Enum):
     or_ = 'or'
     and_ = 'and'
 
 
-class Direction(Enum):
+class Direction(str, Enum):
     forward = 'forward'
     backward = 'backward'
 
